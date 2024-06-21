@@ -25,10 +25,20 @@ public class ProdutosDAO {
     ResultSet resultset;
     ArrayList<ProdutosDTO> listagem = new ArrayList<>();
     
-    public void venderProduto(ProdutosDTO prod){
-        
-        prod.setStatus("Vendido");
-       
+     public void venderProduto(int id){
+         try {
+            conn = new conectaDAO().connectDB();
+            
+            String comand="update produtos set status='Vendido' where id=?";
+            
+            prep=conn.prepareStatement(comand);
+              prep.setInt(1, id);
+               prep.executeUpdate();
+                conn.close();
+         }catch(SQLException ex) {
+          
+             JOptionPane.showMessageDialog(null, "Algo deu errado");
+        }
     }
     public void cadastrarProduto (ProdutosDTO produto) {
         
@@ -37,18 +47,20 @@ public class ProdutosDAO {
             conn = new conectaDAO().connectDB();
             
             String comand="insert into produtos values (?,?,?,?)";
-            
+          
             prep=conn.prepareStatement(comand);
-              prep.setInt(1, listarProdutos().size());
+              prep.setInt(1, listagem.size());
             prep.setString(2, produto.getNome());
             prep.setInt(3, produto.getValor());
             prep.setString(4, produto.getStatus());
+            
             prep.executeUpdate();
+            
              JOptionPane.showMessageDialog(null, "Produto cadastrado com sucesso!");
-            conn.close();
+           
         } catch (SQLException ex) {
           
-             JOptionPane.showMessageDialog(null, "Não foi possível cadastrar esse produto");
+             JOptionPane.showMessageDialog(null, "Não foi possível cadastrar esse produto " + ex.getMessage());
         }
           
     }
@@ -61,7 +73,7 @@ public class ProdutosDAO {
              prep=conn.prepareStatement("SELECT * FROM produtos");
              
              resultset=prep.executeQuery();
-             resultset.next();
+            
              
            while(resultset.next()){
                
@@ -74,7 +86,7 @@ public class ProdutosDAO {
                
                listagem.add(prod);
            }
-          conn.close();
+         
            return listagem;
        
          }catch(SQLException ex) {

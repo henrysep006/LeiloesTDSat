@@ -140,11 +140,13 @@ public class listagemVIEW extends javax.swing.JFrame {
         String id = id_produto_venda.getText();
         
         ProdutosDAO produtosdao = new ProdutosDAO();
-        
-        //produtosdao.venderProduto(Integer.parseInt(id));
+        int idInt =Integer.parseInt(id);
+    produtosdao.venderProduto(idInt);
+  
+   produtosdao.listarProdutos();
         listarProdutos();
     }//GEN-LAST:event_btnVenderActionPerformed
-
+    
     private void btnVendasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVendasActionPerformed
         //vendasVIEW vendas = new vendasVIEW(); 
         //vendas.setVisible(true);
@@ -207,11 +209,11 @@ public class listagemVIEW extends javax.swing.JFrame {
     private void listarProdutos(){
         try {
             ProdutosDAO produtosdao = new ProdutosDAO();
+ ArrayList<ProdutosDTO> listagem = produtosdao.listarProdutos();
             
             DefaultTableModel model = (DefaultTableModel) listaProdutos.getModel();
             model.setNumRows(0);
-            
-            ArrayList<ProdutosDTO> listagem = produtosdao.listarProdutos();
+       
             
             for(int i = 0; i < listagem.size(); i++){
                 model.addRow(new Object[]{
