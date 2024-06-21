@@ -86,6 +86,36 @@ public class ProdutosDAO {
         
         
         
+         public ArrayList<ProdutosDTO> listarProdutosVendidos(){
+        
+         conn = new conectaDAO().connectDB();
+         try{
+             
+             prep=conn.prepareStatement("SELECT * FROM produtos WHERE status='Vendido'");
+             
+             resultset=prep.executeQuery();
+             resultset.next();
+             
+           while(resultset.next()){
+               
+               ProdutosDTO prod =new ProdutosDTO();
+               
+               prod.setId(resultset.getInt("ID"));
+               prod.setNome(resultset.getString("Nome"));
+               prod.setValor(resultset.getInt("Valor"));
+               prod.setStatus(resultset.getString("Status"));
+               
+               listagem.add(prod);
+           }
+          conn.close();
+           return listagem;
+       
+         }catch(SQLException ex) {
+          
+             JOptionPane.showMessageDialog(null, "Não foi possível acessar a lista de produtos");
+        }
+         return null;
+    }
         
    
     
