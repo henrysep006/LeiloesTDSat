@@ -25,6 +25,11 @@ public class ProdutosDAO {
     ResultSet resultset;
     ArrayList<ProdutosDTO> listagem = new ArrayList<>();
     
+    public void venderProduto(ProdutosDTO prod){
+        
+        prod.setStatus("Vendido");
+       
+    }
     public void cadastrarProduto (ProdutosDTO produto) {
         
         
