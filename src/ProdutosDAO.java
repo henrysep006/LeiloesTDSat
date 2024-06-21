@@ -40,7 +40,7 @@ public class ProdutosDAO {
             prep.setString(4, produto.getStatus());
             prep.executeUpdate();
              JOptionPane.showMessageDialog(null, "Produto cadastrado com sucesso!");
-            
+            conn.close();
         } catch (SQLException ex) {
           
              JOptionPane.showMessageDialog(null, "Não foi possível cadastrar esse produto");
@@ -50,8 +50,40 @@ public class ProdutosDAO {
     
     public ArrayList<ProdutosDTO> listarProdutos(){
         
-        return listagem;
+         conn = new conectaDAO().connectDB();
+         try{
+             
+             prep=conn.prepareStatement("SELECT * FROM produtos");
+             
+             resultset=prep.executeQuery();
+             resultset.next();
+             
+           while(resultset.next()){
+               
+               ProdutosDTO prod =new ProdutosDTO();
+               
+               prod.setId(resultset.getInt("ID"));
+               prod.setNome(resultset.getString("Nome"));
+               prod.setValor(resultset.getInt("Valor"));
+               prod.setStatus(resultset.getString("Status"));
+               
+               listagem.add(prod);
+           }
+          conn.close();
+           return listagem;
+       
+         }catch(SQLException ex) {
+          
+             JOptionPane.showMessageDialog(null, "Não foi possível acessar a lista de produtos");
+        }
+         return null;
     }
+        
+        
+        
+        
+   
+    
     
     
     
